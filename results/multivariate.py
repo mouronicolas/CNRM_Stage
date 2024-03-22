@@ -38,31 +38,16 @@ def plot2D_histo(var2var_f, var2var_r, levels, output_dir, add_name):
     fig.tight_layout(rect=(0.0,0.0,0.9,0.95))
     plt.savefig(output_dir+'multivariable_distrib.png')
     
-    
+def plot_multivariable_distrib(mutliv_df, output_dir):
     
 
-def var2Var_hist(data, bins, density=True):
-    """
-    provide 2D histograms with pairs of variables present in the data channels
-    if bins are provided, performs the histogram with the bins given as arguments
+def var2Var_hist(results_df, density=True):
+    bins = opt["results"]["multivariable_distrib"]["bins"]
     
-    Inputs :
-        data : numpy array, shape : B x C (number of samples x channels)
+    bivariable_df = pd.DataFrame(
+        {
         
-        bins : int -> in this case, bins is number of bins used for histogram counting
-               numpy array, shape -> already calculated bin edges as output by numpy.histogram2d
-                if numpy array, shape of bins[0], bins[1] is thus nbins+1
-    Returns :
-        
-        bivariates : numpy array, shape C*(C-1)/2 x Nb, where Nb in either bins 
-                     if bins is int, or (bins[0].shape[0]-1) if bins is array tuple
-                     
-                     bivariate count histograms
-                     
-        bins : the bins either outputted by histogram2d or those
-                passed as array inputs
-    """
-    channels=data.shape[1]
+    channels = data.shape[1]
     var_couples=combinations_with_replacement(range(channels), 2)
     ncouples=channels*(channels-1)//2
     
