@@ -1,0 +1,60 @@
+{
+    "path": {
+        "output_dir": "/cnrm/recyf/Data/users/mouron/results/wind/DDPM_DDIM_infer_comparison/v10/"
+    },
+    "data": {
+        // these parameters should not be changed:
+        "data_train_location": "/cnrm/recyf/Data/users/danjoul/dataset/data_train/",
+        "data_valid_location": "/cnrm/recyf/Data/users/danjoul/dataset/data_test/",
+        "data_test_location": "/cnrm/recyf/Data/users/danjoul/dataset/data_test/",
+        "data_static_location": "/cnrm/recyf/Data/users/danjoul/dataset/",
+        "baseline_location": "/cnrm/recyf/Data/users/danjoul/dataset/baseline/test/",
+        "echeances": [6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36],
+        // these parameters can be changed
+        "param": "v10",
+        "unit": "m/s"
+        
+    },
+    "expes": {
+        "results": [ // filepaths to y_pred.csv for each experiment
+            "/cnrm/recyf/Data/users/mouron/DDPM/experiments/ddpm_0/y_pred.csv",
+            "/cnrm/recyf/Data/users/mouron/DDPM/experiments/ddpm_0_ddim_infer_400/y_pred.csv",
+            "/cnrm/recyf/Data/users/mouron/DDPM/experiments/ddpm_0_ddim_infer_200/y_pred.csv",
+            "/cnrm/recyf/Data/users/mouron/DDPM/experiments/ddpm_0_ddim_infer_100/y_pred.csv",
+            "/cnrm/recyf/Data/users/mouron/DDPM/experiments/ddpm_0_ddim_infer_50/y_pred.csv"
+        ],
+        "name": [ // names of the experiments
+            "ddpm",
+            "ddpm_infer_ddim_400",
+            "ddpm_infer_ddim_200",
+            "ddpm_infer_ddim_100",
+            "ddpm_infer_ddim_50"
+        ],
+        "interp": ["bl", "bl", "bl", "bl", "bl"], // interpolations in input
+        "several_inputs": true // true to plot all the inputs
+    },
+    "maps": {
+        "cmap": "viridis",
+        "n": 10
+    },
+    "mae": {
+        "maps":     false,
+        "distribs": false
+    },
+    "mse": {
+        "maps":     false,
+        "distribs": false
+    },
+    "bias": {
+        "maps":     false,
+        "distribs": false
+    },
+    "ssim": {
+        "maps":     false,
+        "distribs": false
+    },
+    "WD":       false,
+    "PSD":      false,
+    "corr_len": false,
+    "corr":     true
+}

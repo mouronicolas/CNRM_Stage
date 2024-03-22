@@ -1,0 +1,173 @@
+{
+    "name": "sr_ddpm",
+    "gpu_ids": [
+        1
+    ],
+    "benchmark": false,
+    "path": {
+        // "resume_state": null,
+        "working_dir" :  "/cnrm/recyf/Data/users/mouron/DDPM/experiments/ddim_4/",
+        "results":       "/cnrm/recyf/Data/users/mouron/DDPM/experiments/ddim_4/results",
+        "checkpoint":    "/cnrm/recyf/Data/users/mouron/DDPM/experiments/ddim_4/checkpoint/",
+        "eval_results" : "/cnrm/recyf/Data/users/mouron/DDPM/experiments/ddim_4/eval_results/",
+        "infer_results": "/cnrm/recyf/Data/users/mouron/DDPM/experiments/ddim_4/infer_results/",
+        "log": "log"
+    },
+    "data_loading": {
+        // these hyperparameters should not be changed : 
+        "data_train_location": "/cnrm/recyf/Data/users/danjoul/dataset/data_train/",
+        "data_valid_location": "/cnrm/recyf/Data/users/danjoul/dataset/data_test/",
+        "data_test_location": "/cnrm/recyf/Data/users/danjoul/dataset/data_test/",
+        "data_static_location": "/cnrm/recyf/Data/users/danjoul/dataset/",
+        "baseline_location": "/cnrm/recyf/Data/users/danjoul/dataset/baseline/test/",
+        "dates_train": [
+            "2020070100-2021053100-PT24H"
+        ],
+        "dates_valid": [
+            "2021080100-2021083100-PT24H",
+            "2021100100-2021103100-PT24H",
+            "2021100100-2021123100-PT24H",
+            "2022020100-2022022800-PT24H",
+            "2022040100-2022043000-PT24H",
+            "2022060100-2022063000-PT24H"
+        ],
+        "dates_test": [
+            "2021070100-2021073100-PT24H",
+            "2021090100-2021093000-PT24H",
+            "2021110100-2021113000-PT24H",
+            "2022030100-2022033100-PT24H",
+            "2022050100-2022053100-PT24H"
+        ],
+        "echeances": [6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36],
+        // these hyperparameters can be changed : 
+        "interp": "bl", //"r", "bl", "bc" or "c" (the last one should not work)
+        "params_in": ["u10", "v10"],
+        "params_out": ["u10", "v10"],
+        "static_fields": [],
+        "config": "test" // "optimisation" or "test" 
+    },
+    "preprocessing": {
+        "normalisation": "standardisation" //"standardisation", "normalisation", "minmax" or "mean" 
+    },
+    "model": {
+        "which_model_G": "ddpm", // do not change
+        "unet": {
+            "type": "normal", // "normal" or "bypass" (mean bypass network)
+            "in_channel": 4, // 2 * number of input channels 
+            "out_channel": 2, // number of output channels
+            "norm_groups": null, 
+            "inner_channel": 64,
+            "channel_multiplier": [
+                1,
+                2,
+                4,
+                8
+            ],
+            "attn_res": [
+                [28, 34] // resolution of the images on the layer where attention is added
+            ],
+            "res_blocks": 2,
+            "dropout": 0.2,
+            "batch_norm": false
+        },
+        "diffusion": {
+            "img_h": 224,
+            "img_w": 272,
+            "channels": 1, //sample channel
+            "conditional": true // unconditional generation or conditional generation(super_resolution)
+        },
+        "beta_schedule": { // use manual beta_schedule for acceleration
+            "train": {
+                "schedule": "linear",
+                "n_timestep": 2000,
+                 "sampling_timesteps": 200,
+                 "sampling_eta": 0.0,
+                "linear_start": 1e-6,
+                "linear_end": 1e-2
+            },
+            "val": {
+                "schedule": "linear",
+                "n_timestep": 2000,
+                "sampling_timesteps": 200,
+                "sampling_eta": 0.0,
+                "linear_start": 1e-6,
+                "linear_end": 1e-2
+            }
+        }
+    },
+    "training": {
+        "batch_size": 4,
+        "num_workers": 8,
+        "use_shuffle": true,
+        "optimizer": {
+            "type": "adam",
+            "lr": 1e-4
+        },
+        "n_iter": 200000,
+        "val_freq": 5000, //10000
+        "save_checkpoint_freq": 5000, //10000
+        "print_freq": 500, //500
+        "data_len": 50 //50
+    },
+    "inference": {
+        "enable": true,
+        "print_freq": 5,
+        "save_freq": 10,
+        "i_min": 0, // included
+        "i_max": 200, //200 // not included
+        "step": 1
+    },
+    "postprocessing": { // not already included in the main programme
+    	"enable": false,
+        "method": "std" //null, "minmax" or "std"
+    },
+    "results": {
+        "images": {
+            "units": ["m/s", "m/s"],
+            "cmap": ["viridis", "viridis"],
+            "n": 10
+        },
+        "pointwise_scores": {
+            "mae": {
+                "enable": true,
+                "mode": "unique",
+                "cmap": "pink",
+                "units": ["m/s", "m/s"],
+                "n": null
+            },
+            "mse": {
+                "enable": true,
+                "mode": "unique",
+                "cmap": "pink",
+                "units": ["$(m/s)^2$", "$(m/s)^2$"],
+                "n": null
+            },
+            "bias": {
+                "enable": true,
+                "mode": "unique",
+                "cmap": "coolwarm",
+                "units": ["m/s", "m/s"],
+                "n": null
+            },
+            "ssim": {
+                "enable": true,
+                "mode": "unique",
+                "cmap": "magma",
+                "units": ["", ""],
+                "n": null
+            }
+        },
+        "WD": {
+            "enable": true
+        },
+        "PSD": {
+            "enable": true
+        },
+        "correlation_length": {
+            "enable": true
+        },
+        "correlation": {
+            "enable": true
+        }
+    }
+}
