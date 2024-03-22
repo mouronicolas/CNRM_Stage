@@ -36,7 +36,7 @@ def plot2D_histo(var2var_f, var2var_r, levels, output_dir, add_name):
           cb.ax.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
           cb.set_label('Density (log scale)', fontweight='bold', fontsize='large', rotation=270)
     fig.tight_layout(rect=(0.0,0.0,0.9,0.95))
-    plt.savefig(output_dir+'multivariable.png')
+    plt.savefig(output_dir+'multivariable_distrib.png')
     
     
     
